@@ -12,13 +12,13 @@ export const generateWordBank = async () => {
   return { wordBank };
 };
 
-export const generateGameWords = async () => {
-  let gameWords;
+export const generateGameWord = async () => {
+  let gameWord;
   await fetch(gameWordsTxt)
     .then((response) => response.text())
     .then((result) => {
       const gameWordsArray = result.split("\n");
-      gameWords = new Set(gameWordsArray);
+      gameWord = gameWordsArray[Math.floor(Math.random() * gameWordsArray.length)]
     });
-  return { gameWords };
+  return { gameWord };
 };

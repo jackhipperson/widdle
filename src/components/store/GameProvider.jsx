@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { generateWordBank, generateGameWords } from "./words";
+import { generateWordBank, generateGameWord } from "./words";
 
 export const gameContext = React.createContext();
 
@@ -21,6 +21,7 @@ const GameProvider = (props) => {
   const [wordBank, setWordBank] = useState(new Set());
   const [toast, setToast] = useState("");
   const [gameWord, setGameWord] = useState("");
+  console.log(gameWord);
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -29,12 +30,9 @@ const GameProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    generateGameWords().then((words) => {
-      const wordNum = parseInt(Math.random() * words.length);
-      setGameWord(words.gameWords[1]);
-
+    generateGameWord().then((word) => {
+      setGameWord(word.gameWord.toUpperCase());
     });
-
   }, []);
 
   const onAdd = (key) => {
@@ -113,7 +111,14 @@ const GameProvider = (props) => {
         setToast("");
       }, 2500);
       clearTimeout();
+      return;
     }
+    if (currentPos.attempt === 5 && board[currentPos.attempt].join("").toLowerCase() !==
+    gameWord.toLowerCase()) {
+        setToast(gameWord)
+        return;
+    }
+    
   };
 
   return (
