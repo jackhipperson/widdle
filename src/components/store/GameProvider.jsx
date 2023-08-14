@@ -21,7 +21,8 @@ const GameProvider = (props) => {
   const [wordBank, setWordBank] = useState(new Set());
   const [toast, setToast] = useState("");
   const [gameWord, setGameWord] = useState("");
-  console.log(gameWord);
+  const [gameOver, setGameOver] = useState(false);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -32,10 +33,12 @@ const GameProvider = (props) => {
   useEffect(() => {
     generateGameWord().then((word) => {
       setGameWord(word.gameWord.toUpperCase());
+      console.log(word.gameWord.toUpperCase());
     });
   }, []);
 
   const onAdd = (key) => {
+    if (gameOver) return;
     if (currentPos.letter > 4) return;
     else {
       const newBoard = [...board];
@@ -49,6 +52,7 @@ const GameProvider = (props) => {
   };
 
   const onDel = () => {
+    if (gameOver) return;
     if (currentPos.letter === 0) return;
     else {
       const newBoard = [...board];
@@ -62,6 +66,7 @@ const GameProvider = (props) => {
   };
 
   const onEnter = () => {
+    if (gameOver) return;
     if (currentPos.letter !== 5) return;
     else if (!wordBank.has(board[currentPos.attempt].join("").toLowerCase())) {
       setToast("Not in word list");
@@ -94,6 +99,7 @@ const GameProvider = (props) => {
       board[currentPos.attempt].join("").toLowerCase() ===
       gameWord.toLowerCase()
     ) {
+      setGameOver(true);
       if (currentPos.attempt === 0) {
         setToast("Genius");
       } else if (currentPos.attempt === 1) {
@@ -111,15 +117,22 @@ const GameProvider = (props) => {
         setToast("");
       }, 2500);
       clearTimeout();
+      setModal(true);
       return;
     }
-    if (currentPos.attempt === 5 && board[currentPos.attempt].join("").toLowerCase() !==
-    gameWord.toLowerCase()) {
-        setToast(gameWord)
-        return;
+    if (
+      currentPos.attempt === 5 &&
+      board[currentPos.attempt].join("").toLowerCase() !==
+        gameWord.toLowerCase()
+    ) {
+      setToast(gameWord);
+      return;
     }
-    
   };
+
+  const closeModal = () => {
+    setModal(false)
+  }
 
   return (
     <gameContext.Provider
@@ -132,6 +145,8 @@ const GameProvider = (props) => {
         currentPos,
         letters,
         toast,
+        closeModal,
+        modal
       }}
     >
       {props.children}
