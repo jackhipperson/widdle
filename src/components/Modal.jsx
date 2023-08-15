@@ -8,10 +8,13 @@ const Backdrop = () => {
 
 const Overlay = () => {
   const gameCtx = useContext(gameContext);
+  function closeModal() {
+    gameCtx.setModal(false)
+  }
   return (
-    <div className="absolute z-100 w-[520px] h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#f6f7f8] shadow-xl bg-white rounded-lg text-black p-2">
-      <div onClick={gameCtx.closeModal} className="flex justify-end font-extrabold">
-        <p>X</p>
+    <div className="absolute z-50 w-[520px] h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#f6f7f8] shadow-xl bg-white rounded-lg text-black p-2">
+      <div className="flex justify-end font-extrabold">
+        <button onClick={closeModal} className="p-2">X</button>
       </div>
     </div>
   );
@@ -20,6 +23,7 @@ function Modal() {
   const gameCtx = useContext(gameContext);
   const portalOverlay = document.getElementById("overlay");
   const protalBackdrop = document.getElementById("backdrop");
+
   return (
     <>
       {gameCtx.modal && (

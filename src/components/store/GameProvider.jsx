@@ -23,6 +23,19 @@ const GameProvider = (props) => {
   const [gameWord, setGameWord] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [modal, setModal] = useState(false);
+  const [userStats, setUserStats] = useState({
+    played:0,
+    won:0,
+    word1:0,
+    word2:0,
+    word3:0,
+    word4:0,
+    word5:0,
+    word6:0,
+    isOnStreak:'No',
+    currentStreak:0,
+    maxStreak:0
+  })
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -115,9 +128,9 @@ const GameProvider = (props) => {
       }
       setTimeout(() => {
         setToast("");
+        setModal(true);
       }, 2500);
       clearTimeout();
-      setModal(true);
       return;
     }
     if (
@@ -126,13 +139,14 @@ const GameProvider = (props) => {
         gameWord.toLowerCase()
     ) {
       setToast(gameWord);
+      setTimeout(() => {
+        setToast("");
+        setModal(true);
+      }, 2500);
+      clearTimeout();
       return;
     }
   };
-
-  const closeModal = () => {
-    setModal(false)
-  }
 
   return (
     <gameContext.Provider
@@ -145,8 +159,8 @@ const GameProvider = (props) => {
         currentPos,
         letters,
         toast,
-        closeModal,
-        modal
+        modal,
+        setModal,
       }}
     >
       {props.children}
