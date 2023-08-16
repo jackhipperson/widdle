@@ -24,18 +24,18 @@ const GameProvider = (props) => {
   const [gameOver, setGameOver] = useState(false);
   const [modal, setModal] = useState(false);
   const [userStats, setUserStats] = useState({
-    played:0,
-    won:0,
-    word1:0,
-    word2:0,
-    word3:0,
-    word4:0,
-    word5:0,
-    word6:0,
-    isOnStreak:'No',
-    currentStreak:0,
-    maxStreak:0
-  })
+    played: 0,
+    won: 0,
+    word1: 0,
+    word2: 0,
+    word3: 0,
+    word4: 0,
+    word5: 0,
+    word6: 0,
+    isOnStreak: "No",
+    currentStreak: 0,
+    maxStreak: 0,
+  });
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -48,6 +48,15 @@ const GameProvider = (props) => {
       setGameWord(word.gameWord.toUpperCase());
       console.log(word.gameWord.toUpperCase());
     });
+  }, []);
+
+  useEffect(() => {
+    const stats = JSON.parse(localStorage.getItem("stats"));
+    if (stats) {
+      setUserStats(stats);
+    } else {
+      localStorage.setItem("stats", JSON.stringify(userStats));
+    }
   }, []);
 
   const onAdd = (key) => {
@@ -113,19 +122,36 @@ const GameProvider = (props) => {
       gameWord.toLowerCase()
     ) {
       setGameOver(true);
+      let newStats = { ...userStats };
+      if (newStats.currentStreak + 1 > newStats.maxStreak) {
+        newStats.maxStreak = userStats.currentStreak + 1;
+      }
+      newStats.played = newStats.played + 1;
+      newStats.won = newStats.won + 1;
+      newStats.isOnStreak = "Yes";
+      newStats.currentStreak = userStats.currentStreak + 1;
       if (currentPos.attempt === 0) {
         setToast("Genius");
+        newStats.word1 = newStats.word1 + 1;
       } else if (currentPos.attempt === 1) {
         setToast("Magnificent");
+        newStats.word2 = newStats.word1 + 1;
       } else if (currentPos.attempt === 2) {
         setToast("Impressive");
+        newStats.word3 = newStats.word1 + 1;
       } else if (currentPos.attempt === 3) {
         setToast("Splendid");
+        newStats.word4 = newStats.word1 + 1;
       } else if (currentPos.attempt === 4) {
         setToast("Great");
+        newStats.word5 = newStats.word1 + 1;
       } else if (currentPos.attempt === 5) {
         setToast("Phew");
+        newStats.word6 = newStats.word1 + 1;
       }
+      console.log(newStats);
+      localStorage.setItem("stats", JSON.stringify(newStats));
+      setUserStats(newStats);
       setTimeout(() => {
         setToast("");
         setModal(true);
