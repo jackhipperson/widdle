@@ -165,6 +165,13 @@ const GameProvider = (props) => {
         gameWord.toLowerCase()
     ) {
       setToast(gameWord);
+      setGameOver(true);
+      let newStats = { ...userStats };
+      newStats.played = newStats.played + 1;
+      newStats.isOnStreak = "No";
+      newStats.currentStreak = 0;
+      localStorage.setItem("stats", JSON.stringify(newStats));
+      setUserStats(newStats);
       setTimeout(() => {
         setToast("");
         setModal(true);
@@ -187,6 +194,7 @@ const GameProvider = (props) => {
         toast,
         modal,
         setModal,
+        userStats
       }}
     >
       {props.children}
