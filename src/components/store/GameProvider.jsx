@@ -135,19 +135,19 @@ const GameProvider = (props) => {
         newStats.word1 = newStats.word1 + 1;
       } else if (currentPos.attempt === 1) {
         setToast("Magnificent");
-        newStats.word2 = newStats.word1 + 1;
+        newStats.word2 = newStats.word2 + 1;
       } else if (currentPos.attempt === 2) {
         setToast("Impressive");
-        newStats.word3 = newStats.word1 + 1;
+        newStats.word3 = newStats.word3 + 1;
       } else if (currentPos.attempt === 3) {
         setToast("Splendid");
-        newStats.word4 = newStats.word1 + 1;
+        newStats.word4 = newStats.word4 + 1;
       } else if (currentPos.attempt === 4) {
         setToast("Great");
-        newStats.word5 = newStats.word1 + 1;
+        newStats.word5 = newStats.word5 + 1;
       } else if (currentPos.attempt === 5) {
         setToast("Phew");
-        newStats.word6 = newStats.word1 + 1;
+        newStats.word6 = newStats.word6 + 1;
       }
       console.log(newStats);
       localStorage.setItem("stats", JSON.stringify(newStats));
