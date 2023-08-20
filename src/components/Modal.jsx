@@ -107,8 +107,8 @@ const Overlay = () => {
           maxWordWin={maxWordWin}
         />
       </div>
-      <div>
-        
+      <div className="p-2">
+        <button className="border border-[#787c7e] p-2" >Next Word</button>
       </div>
     </div>
   );
