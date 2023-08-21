@@ -7,7 +7,7 @@ function DistributionItem(props) {
     parseInt((props.wordTotal / props.maxWordWin) * 100) + "%";
   let colour = "#787c7e";
 
-    if (parseInt(gameCtx.currentPos.attempt) === parseInt(props.id)) {
+    if (gameCtx.winningWord === parseInt(props.id)) {
       colour = "#538d4e";
     }
 

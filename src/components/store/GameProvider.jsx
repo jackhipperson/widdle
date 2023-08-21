@@ -23,6 +23,7 @@ const GameProvider = (props) => {
   const [gameWord, setGameWord] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [modal, setModal] = useState(false);
+  const [winningWord, setWinningWord] = useState(0);
   const [userStats, setUserStats] = useState({
     played: 0,
     won: 0,
@@ -132,21 +133,27 @@ const GameProvider = (props) => {
       newStats.currentStreak = userStats.currentStreak + 1;
       if (currentPos.attempt === 0) {
         setToast("Genius");
+        setWinningWord(1);
         newStats.word1 = newStats.word1 + 1;
       } else if (currentPos.attempt === 1) {
         setToast("Magnificent");
+        setWinningWord(2);
         newStats.word2 = newStats.word2 + 1;
       } else if (currentPos.attempt === 2) {
         setToast("Impressive");
+        setWinningWord(3);
         newStats.word3 = newStats.word3 + 1;
       } else if (currentPos.attempt === 3) {
         setToast("Splendid");
+        setWinningWord(4);
         newStats.word4 = newStats.word4 + 1;
       } else if (currentPos.attempt === 4) {
         setToast("Great");
+        setWinningWord(5);
         newStats.word5 = newStats.word5 + 1;
       } else if (currentPos.attempt === 5) {
         setToast("Phew");
+        setWinningWord(6);
         newStats.word6 = newStats.word6 + 1;
       }
       console.log(newStats);
@@ -181,6 +188,22 @@ const GameProvider = (props) => {
     }
   };
 
+  const resetGameHandler = () => {
+    setBoard([
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+    ]);
+    setCurrentPos({ attempt: 0, letter: 0 });
+    setLetters(defaultLetters);
+    setGameOver(false);
+    setModal(false);
+    console.log(board);
+  };
+
   return (
     <gameContext.Provider
       value={{
@@ -194,7 +217,9 @@ const GameProvider = (props) => {
         toast,
         modal,
         setModal,
-        userStats
+        userStats,
+        winningWord,
+        resetGameHandler,
       }}
     >
       {props.children}

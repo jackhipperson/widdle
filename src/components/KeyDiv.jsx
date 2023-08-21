@@ -22,7 +22,7 @@ const KeyDiv = (props) => {
   const unused = !correct && !almost && !used
 
   const keyClass =
-  "flex flex-col cursor-pointer rounded-md font-bold mx-1 h-[58px] items-center justify-center " +
+  "flex flex-col cursor-pointer rounded-md font-bold mx-0.5 h-[58px] items-center justify-center " +
   `${props.id.length === 1 ? "w-[43px] text-xl " : "w-[70px] text-xs "}` +
   `${correct ? "bg-[#538d4e] text-white " : ""}` +
   `${almost ? "bg-[#c9b458] text-white " : ""}` +

@@ -108,7 +108,7 @@ const Overlay = () => {
         />
       </div>
       <div className="p-2">
-        <button className="border border-[#787c7e] p-2" >Next Word</button>
+        <button onClick={gameCtx.resetGameHandler} className="border border-[#787c7e] p-2 hover:bg-[#538d4e] hover:text-white active:bg-[#538d4e] active:text-white" >Next Word</button>
       </div>
     </div>
   );

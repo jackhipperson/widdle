@@ -10,7 +10,7 @@ function App() {
     <GameProvider>
       <Modal />
       <Toast />
-      <div className="h-screen flex flex-col flex-grow max-w-[500px] mx-auto">
+      <div className="h-[100%] flex flex-col flex-grow max-w-[500px] mx-auto">
         <Header />
         <GameBoard />
         <Keyboard />
