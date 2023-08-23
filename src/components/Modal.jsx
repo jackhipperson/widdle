@@ -5,7 +5,13 @@ import DistributionItem from "./DistributionItem";
 
 
 const Backdrop = () => {
-  return <div className="fixed top-0 left-0 w-full h-full z-20"></div>;
+
+  const gameCtx = useContext(gameContext)
+  const onClickHandler = () => {
+    gameCtx.setModal(false)
+  }
+
+  return <div onClick={onClickHandler} className="fixed top-0 left-0 w-full h-full z-20 bg-slate-700 opacity-50"></div>;
 };
 
 const Overlay = () => {
@@ -39,7 +45,7 @@ const Overlay = () => {
   }
 
   return (
-    <div className="absolute z-50 w-[520px] h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#f6f7f8] shadow-xl bg-white rounded-lg text-black p-2">
+    <div className="absolute z-50 w-[95%] h-[80%] md:w-[520px] md:h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#f6f7f8] shadow-xl bg-white rounded-lg text-black p-2">
       <div className="flex justify-end font-extrabold">
         <button onClick={closeModal} className="p-2">
           X

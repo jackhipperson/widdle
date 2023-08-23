@@ -202,6 +202,10 @@ const GameProvider = (props) => {
     setGameOver(false);
     setModal(false);
     console.log(board);
+    generateGameWord().then((word) => {
+      setGameWord(word.gameWord.toUpperCase());
+      console.log(word.gameWord.toUpperCase());
+    });
   };
 
   return (
