@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { generateWordBank, generateGameWord } from "./words";
 
 export const gameContext = React.createContext();
 
-const defaultBoard = [
+const defaultBoard = {board:[
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
-];
+], style:[
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ["GREY", "GREY", "GREY", "GREY", "GREY"],
+]};
 
 const defaultLetters = { correct: [""], almost: [""], letters: [""] };
 
 const GameProvider = (props) => {
-  const [board, setBoard] = useState(defaultBoard);
+  const [squareStyle, setSquareStyle] = useState(defaultBoard);
   const [currentPos, setCurrentPos] = useState({ attempt: 0, letter: 0 });
   const [letters, setLetters] = useState(defaultLetters);
   const [wordBank, setWordBank] = useState(new Set());
@@ -37,6 +44,20 @@ const GameProvider = (props) => {
     currentStreak: 0,
     maxStreak: 0,
   });
+
+const reducer = (state, action) => {
+  if (action.type === "BOARD") {
+    return {board: action.value, style: state.style}
+  }
+  if (action.type === "STYLE") {
+    return {board: state.board, style: action.value}
+  }
+  return defaultBoard
+}
+
+const [board, dispatchBoard] = useReducer(reducer, defaultBoard);
+
+console.log(board);
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -64,9 +85,9 @@ const GameProvider = (props) => {
     if (gameOver) return;
     if (currentPos.letter > 4) return;
     else {
-      const newBoard = [...board];
+      const newBoard = board.board;
       newBoard[currentPos.attempt][currentPos.letter] = key;
-      setBoard(newBoard);
+      dispatchBoard({type: "BOARD", value: newBoard});
       setCurrentPos({
         attempt: currentPos.attempt,
         letter: currentPos.letter + 1,
@@ -78,9 +99,9 @@ const GameProvider = (props) => {
     if (gameOver) return;
     if (currentPos.letter === 0) return;
     else {
-      const newBoard = [...board];
+      const newBoard = board.board;
       newBoard[currentPos.attempt][currentPos.letter - 1] = "";
-      setBoard(newBoard);
+      dispatchBoard({type: "BOARD", value: newBoard});
       setCurrentPos({
         attempt: currentPos.attempt,
         letter: currentPos.letter - 1,
@@ -91,7 +112,7 @@ const GameProvider = (props) => {
   const onEnter = () => {
     if (gameOver) return;
     if (currentPos.letter !== 5) return;
-    else if (!wordBank.has(board[currentPos.attempt].join("").toLowerCase())) {
+    else if (!wordBank.has(board.board[currentPos.attempt].join("").toLowerCase())) {
       setToast("Not in word list");
       setTimeout(() => {
         setToast("");
@@ -99,27 +120,39 @@ const GameProvider = (props) => {
       clearTimeout();
       return;
     } else {
-      let correctTemp = [...letters.correct];
-      let almostTemp = [...letters.almost];
-      let otherTemp = [...letters.letters];
+      let squareStyleTemp = board.style;
+      let gameWordTemp = gameWord;
       for (var i = 0; i < 5; i++) {
-        if (board[currentPos.attempt][i] === gameWord[i]) {
-          correctTemp.push(board[currentPos.attempt][i]);
-        } else if (gameWord.includes(board[currentPos.attempt][i])) {
-          almostTemp.push(board[currentPos.attempt][i]);
-        } else {
-          otherTemp.push(board[currentPos.attempt][i]);
-        }
+        if (board.board[currentPos.attempt][i] === gameWord[i]) {
+          squareStyleTemp[currentPos.attempt][i] = "GREEN";
+        } else if (gameWordTemp.includes(board.board[currentPos.attempt][i])) {
+          squareStyleTemp[currentPos.attempt][i] = "AMBER";
+        } 
+        gameWordTemp.replace(gameWord[i]," ");
       }
-      setLetters({
-        correct: correctTemp,
-        almost: almostTemp,
-        letters: otherTemp,
-      });
+      dispatchBoard({type: "STYLE", value: squareStyleTemp});
+
+      // let correctTemp = [...letters.correct];
+      // let almostTemp = [...letters.almost];
+      // let otherTemp = [...letters.letters];
+      // for (var i = 0; i < 5; i++) {
+      //   if (board[currentPos.attempt][i] === gameWord[i]) {
+      //     correctTemp.push(board[currentPos.attempt][i]);
+      //   } else if (gameWord.includes(board[currentPos.attempt][i])) {
+      //     almostTemp.push(board[currentPos.attempt][i]);
+      //   } else {
+      //     otherTemp.push(board[currentPos.attempt][i]);
+      //   }
+      // }
+      // setLetters({
+      //   correct: correctTemp,
+      //   almost: almostTemp,
+      //   letters: otherTemp,
+      // });
       setCurrentPos({ attempt: currentPos.attempt + 1, letter: 0 });
     }
     if (
-      board[currentPos.attempt].join("").toLowerCase() ===
+      board.board[currentPos.attempt].join("").toLowerCase() ===
       gameWord.toLowerCase()
     ) {
       setGameOver(true);
@@ -168,7 +201,7 @@ const GameProvider = (props) => {
     }
     if (
       currentPos.attempt === 5 &&
-      board[currentPos.attempt].join("").toLowerCase() !==
+      board.board[currentPos.attempt].join("").toLowerCase() !==
         gameWord.toLowerCase()
     ) {
       setToast(gameWord);
@@ -189,14 +222,7 @@ const GameProvider = (props) => {
   };
 
   const resetGameHandler = () => {
-    setBoard([
-      ["", "", "", "", ""],
-      ["", "", "", "", ""],
-      ["", "", "", "", ""],
-      ["", "", "", "", ""],
-      ["", "", "", "", ""],
-      ["", "", "", "", ""],
-    ]);
+    dispatchBoard({type: "RESET"});
     setCurrentPos({ attempt: 0, letter: 0 });
     setLetters(defaultLetters);
     setGameOver(false);
@@ -224,6 +250,7 @@ const GameProvider = (props) => {
         userStats,
         winningWord,
         resetGameHandler,
+        squareStyle
       }}
     >
       {props.children}
