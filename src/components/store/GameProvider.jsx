@@ -3,21 +3,24 @@ import { generateWordBank, generateGameWord } from "./words";
 
 export const gameContext = React.createContext();
 
-const defaultBoard = {board:[
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-], style:[
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-  ["GREY", "GREY", "GREY", "GREY", "GREY"],
-]};
+const defaultBoard = {
+  board: [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ],
+  style: [
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+    ["GREY", "GREY", "GREY", "GREY", "GREY"],
+  ],
+};
 
 const defaultLetters = { correct: [""], almost: [""], letters: [""] };
 
@@ -45,19 +48,19 @@ const GameProvider = (props) => {
     maxStreak: 0,
   });
 
-const reducer = (state, action) => {
-  if (action.type === "BOARD") {
-    return {board: action.value, style: state.style}
-  }
-  if (action.type === "STYLE") {
-    return {board: state.board, style: action.value}
-  }
-  return defaultBoard
-}
+  const reducer = (state, action) => {
+    if (action.type === "BOARD") {
+      return { board: action.value, style: state.style };
+    }
+    if (action.type === "STYLE") {
+      return { board: state.board, style: action.value };
+    }
+    return defaultBoard;
+  };
 
-const [board, dispatchBoard] = useReducer(reducer, defaultBoard);
+  const [board, dispatchBoard] = useReducer(reducer, defaultBoard);
 
-console.log(board);
+  console.log(board);
 
   useEffect(() => {
     generateWordBank().then((words) => {
@@ -87,7 +90,7 @@ console.log(board);
     else {
       const newBoard = board.board;
       newBoard[currentPos.attempt][currentPos.letter] = key;
-      dispatchBoard({type: "BOARD", value: newBoard});
+      dispatchBoard({ type: "BOARD", value: newBoard });
       setCurrentPos({
         attempt: currentPos.attempt,
         letter: currentPos.letter + 1,
@@ -101,7 +104,7 @@ console.log(board);
     else {
       const newBoard = board.board;
       newBoard[currentPos.attempt][currentPos.letter - 1] = "";
-      dispatchBoard({type: "BOARD", value: newBoard});
+      dispatchBoard({ type: "BOARD", value: newBoard });
       setCurrentPos({
         attempt: currentPos.attempt,
         letter: currentPos.letter - 1,
@@ -112,7 +115,9 @@ console.log(board);
   const onEnter = () => {
     if (gameOver) return;
     if (currentPos.letter !== 5) return;
-    else if (!wordBank.has(board.board[currentPos.attempt].join("").toLowerCase())) {
+    else if (
+      !wordBank.has(board.board[currentPos.attempt].join("").toLowerCase())
+    ) {
       setToast("Not in word list");
       setTimeout(() => {
         setToast("");
@@ -121,16 +126,24 @@ console.log(board);
       return;
     } else {
       let squareStyleTemp = board.style;
-      let gameWordTemp = gameWord;
+      let guessTemp = board.board[currentPos.attempt].join("");
+      console.log(guessTemp);
       for (var i = 0; i < 5; i++) {
         if (board.board[currentPos.attempt][i] === gameWord[i]) {
           squareStyleTemp[currentPos.attempt][i] = "GREEN";
-        } else if (gameWordTemp.includes(board.board[currentPos.attempt][i])) {
-          squareStyleTemp[currentPos.attempt][i] = "AMBER";
-        } 
-        gameWordTemp.replace(gameWord[i]," ");
+          guessTemp = guessTemp.replace(gameWord[i], " ");
+        }
       }
-      dispatchBoard({type: "STYLE", value: squareStyleTemp});
+      console.log(guessTemp);
+      for (var i = 0; i < 5; i++) {
+        if (guessTemp.includes(board.board[currentPos.attempt][i])) {
+          squareStyleTemp[currentPos.attempt][i] = "AMBER";
+          guessTemp = guessTemp.replace(gameWord[i], " ");
+          console.log("YES");
+        }
+      }
+      console.log(guessTemp);
+      dispatchBoard({ type: "STYLE", value: squareStyleTemp });
 
       // let correctTemp = [...letters.correct];
       // let almostTemp = [...letters.almost];
@@ -222,7 +235,7 @@ console.log(board);
   };
 
   const resetGameHandler = () => {
-    dispatchBoard({type: "RESET"});
+    dispatchBoard({ type: "RESET" });
     setCurrentPos({ attempt: 0, letter: 0 });
     setLetters(defaultLetters);
     setGameOver(false);
@@ -250,7 +263,7 @@ console.log(board);
         userStats,
         winningWord,
         resetGameHandler,
-        squareStyle
+        squareStyle,
       }}
     >
       {props.children}

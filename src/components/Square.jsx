@@ -3,43 +3,40 @@ import { gameContext } from "./store/GameProvider";
 
 const Square = (props) => {
   const gameCtx = useContext(gameContext);
-  const letter = gameCtx.board[props.attemptNum][props.letterPos];
+  const letter = gameCtx.board.board[props.attemptNum][props.letterPos];
   const gameAttemptNum = gameCtx.currentPos.attempt;
   const squareAttemptNum = props.attemptNum;
 
-  let appearsInAttempt = 0;
-  let appearsInGameword = 0;
-  let occurance = 0;
+  // let appearsInAttempt = 0;
+  // let appearsInGameword = 0;
+  // let occurance = 0;
 
-  for (let i = 0; i < 4; i++) {
-    if (gameCtx.gameWord[i] === letter) {
-      appearsInGameword += 1;
-    }
-    if (gameCtx.board[props.attemptNum][i] === letter) {
-      appearsInAttempt += 1;
-    }
-    if (
-      i <= props.letterPos &&
-      gameCtx.gameWord[i] === gameCtx.board[props.attemptNum][i]
-    ) {
-      occurance += 1;
-    }
-  }
+  // for (let i = 0; i < 4; i++) {
+  //   if (gameCtx.gameWord[i] === letter) {
+  //     appearsInGameword += 1;
+  //   }
+  //   if (gameCtx.board[props.attemptNum][i] === letter) {
+  //     appearsInAttempt += 1;
+  //   }
+  //   if (
+  //     i <= props.letterPos &&
+  //     gameCtx.gameWord[i] === gameCtx.board[props.attemptNum][i]
+  //   ) {
+  //     occurance += 1;
+  //   }
+  // }
 
-  console.log("Appears = " + appearsInGameword + " Occurs = " + occurance + " " + letter);
-
+  // console.log("Appears = " + appearsInGameword + " Occurs = " + occurance + " " + letter);
 
   const correct =
-    gameCtx.gameWord[props.letterPos] === letter &&
+    gameCtx.board.style[props.attemptNum][props.letterPos] === "GREEN" &&
     gameAttemptNum > squareAttemptNum;
   const almost =
-    !correct &&
-    letter !== "" &&
-    gameCtx.gameWord.includes(letter) &&
-    gameAttemptNum > squareAttemptNum &&
-    occurance <= appearsInGameword;
+    gameCtx.board.style[props.attemptNum][props.letterPos] === "AMBER";
+  gameAttemptNum > squareAttemptNum;
   const incorrect =
-    !correct && !almost && letter !== "" && gameAttemptNum > squareAttemptNum;
+    gameCtx.board.style[props.attemptNum][props.letterPos] === "GREY" &&
+    gameAttemptNum > squareAttemptNum;
   const entered = !correct && !almost && !incorrect && letter !== "";
   const empty = letter === "";
 
