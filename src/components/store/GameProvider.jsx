@@ -127,22 +127,19 @@ const GameProvider = (props) => {
     } else {
       let squareStyleTemp = board.style;
       let guessTemp = board.board[currentPos.attempt].join("");
-      console.log(guessTemp);
       for (var i = 0; i < 5; i++) {
         if (board.board[currentPos.attempt][i] === gameWord[i]) {
           squareStyleTemp[currentPos.attempt][i] = "GREEN";
           guessTemp = guessTemp.replace(gameWord[i], " ");
         }
       }
-      console.log(guessTemp);
+
       for (var i = 0; i < 5; i++) {
-        if (guessTemp.includes(board.board[currentPos.attempt][i])) {
+        if (guessTemp.includes(board.board[currentPos.attempt][i]) && squareStyleTemp[currentPos.attempt][i] !== "GREEN") {
           squareStyleTemp[currentPos.attempt][i] = "AMBER";
           guessTemp = guessTemp.replace(gameWord[i], " ");
-          console.log("YES");
         }
       }
-      console.log(guessTemp);
       dispatchBoard({ type: "STYLE", value: squareStyleTemp });
 
       // let correctTemp = [...letters.correct];
