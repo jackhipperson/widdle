@@ -60,8 +60,6 @@ const GameProvider = (props) => {
 
   const [board, dispatchBoard] = useReducer(reducer, defaultBoard);
 
-  console.log(board);
-
   useEffect(() => {
     generateWordBank().then((words) => {
       setWordBank(words.wordBank);
@@ -135,7 +133,7 @@ const GameProvider = (props) => {
       }
 
       for (var i = 0; i < 5; i++) {
-        if (guessTemp.includes(board.board[currentPos.attempt][i]) && squareStyleTemp[currentPos.attempt][i] !== "GREEN") {
+        if (guessTemp[i].includes(gameWord) && squareStyleTemp[currentPos.attempt][i] !== "GREEN") {
           squareStyleTemp[currentPos.attempt][i] = "AMBER";
           guessTemp = guessTemp.replace(gameWord[i], " ");
         }
