@@ -7,27 +7,6 @@ const Square = (props) => {
   const gameAttemptNum = gameCtx.currentPos.attempt;
   const squareAttemptNum = props.attemptNum;
 
-  // let appearsInAttempt = 0;
-  // let appearsInGameword = 0;
-  // let occurance = 0;
-
-  // for (let i = 0; i < 4; i++) {
-  //   if (gameCtx.gameWord[i] === letter) {
-  //     appearsInGameword += 1;
-  //   }
-  //   if (gameCtx.board[props.attemptNum][i] === letter) {
-  //     appearsInAttempt += 1;
-  //   }
-  //   if (
-  //     i <= props.letterPos &&
-  //     gameCtx.gameWord[i] === gameCtx.board[props.attemptNum][i]
-  //   ) {
-  //     occurance += 1;
-  //   }
-  // }
-
-  // console.log("Appears = " + appearsInGameword + " Occurs = " + occurance + " " + letter);
-
   const correct =
     gameCtx.board.style[props.attemptNum][props.letterPos] === "GREEN" &&
     gameAttemptNum > squareAttemptNum;

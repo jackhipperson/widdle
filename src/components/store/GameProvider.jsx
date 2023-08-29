@@ -25,7 +25,6 @@ const defaultBoard = {
 const defaultLetters = { correct: [""], almost: [""], letters: [""] };
 
 const GameProvider = (props) => {
-  const [squareStyle, setSquareStyle] = useState(defaultBoard);
   const [currentPos, setCurrentPos] = useState({ attempt: 0, letter: 0 });
   const [letters, setLetters] = useState(defaultLetters);
   const [wordBank, setWordBank] = useState(new Set());
@@ -54,6 +53,26 @@ const GameProvider = (props) => {
     }
     if (action.type === "STYLE") {
       return { board: state.board, style: action.value };
+    }
+    if (action.type === "RESET") {
+      return  {
+        board: [
+          ["", "", "", "", ""],
+          ["", "", "", "", ""],
+          ["", "", "", "", ""],
+          ["", "", "", "", ""],
+          ["", "", "", "", ""],
+          ["", "", "", "", ""],
+        ],
+        style: [
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+          ["GREY", "GREY", "GREY", "GREY", "GREY"],
+        ],
+      } ;
     }
     return defaultBoard;
   };
@@ -123,40 +142,39 @@ const GameProvider = (props) => {
       clearTimeout();
       return;
     } else {
+      let correctTemp = [...letters.correct];
+      let almostTemp = [...letters.almost];
+      let otherTemp = [...letters.letters];
       let squareStyleTemp = board.style;
       let guessTemp = board.board[currentPos.attempt].join("");
+      let gameWordTemp = gameWord;
       for (var i = 0; i < 5; i++) {
-        if (board.board[currentPos.attempt][i] === gameWord[i]) {
+        if (guessTemp[i] === gameWord[i]) {
           squareStyleTemp[currentPos.attempt][i] = "GREEN";
-          guessTemp = guessTemp.replace(gameWord[i], " ");
+          correctTemp.push(gameWord[i]);
+          gameWordTemp = gameWordTemp.replace(gameWord[i], " ");
         }
       }
 
       for (var i = 0; i < 5; i++) {
-        if (guessTemp[i].includes(gameWord) && squareStyleTemp[currentPos.attempt][i] !== "GREEN") {
+        if (
+          gameWordTemp.includes(guessTemp[i]) &&
+          squareStyleTemp[currentPos.attempt][i] !== "GREEN"
+        ) {
           squareStyleTemp[currentPos.attempt][i] = "AMBER";
-          guessTemp = guessTemp.replace(gameWord[i], " ");
+          almostTemp.push(guessTemp[i]);
+          gameWordTemp = gameWordTemp.replace(guessTemp[i], " ");
+        } else {
+          otherTemp.push(guessTemp[i]);
         }
       }
-      dispatchBoard({ type: "STYLE", value: squareStyleTemp });
 
-      // let correctTemp = [...letters.correct];
-      // let almostTemp = [...letters.almost];
-      // let otherTemp = [...letters.letters];
-      // for (var i = 0; i < 5; i++) {
-      //   if (board[currentPos.attempt][i] === gameWord[i]) {
-      //     correctTemp.push(board[currentPos.attempt][i]);
-      //   } else if (gameWord.includes(board[currentPos.attempt][i])) {
-      //     almostTemp.push(board[currentPos.attempt][i]);
-      //   } else {
-      //     otherTemp.push(board[currentPos.attempt][i]);
-      //   }
-      // }
-      // setLetters({
-      //   correct: correctTemp,
-      //   almost: almostTemp,
-      //   letters: otherTemp,
-      // });
+      dispatchBoard({ type: "STYLE", value: squareStyleTemp });
+      setLetters({
+        correct: correctTemp,
+        almost: almostTemp,
+        letters: otherTemp,
+      });
       setCurrentPos({ attempt: currentPos.attempt + 1, letter: 0 });
     }
     if (
@@ -258,7 +276,6 @@ const GameProvider = (props) => {
         userStats,
         winningWord,
         resetGameHandler,
-        squareStyle,
       }}
     >
       {props.children}
