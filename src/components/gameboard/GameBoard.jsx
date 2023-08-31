@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import Square from "./Square";
-import gameContext from "./store/GameProvider";
+import gameContext from "../store/GameProvider";
 
 const GameBoard = (props) => {
   const gameCtx = useContext(gameContext);
 
   return (
-    <div className="flex justify-center items-center flex-grow max-w-[500px] mx-auto">
+    <div className="flex justify-center items-center max-w-[500px] mx-auto">
       <div>
         <div className="flex flex-row">
           <Square letterPos={0} attemptNum={0} />

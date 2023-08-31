@@ -1,16 +1,16 @@
-import GameBoard from "./components/GameBoard";
-import Header from "./components/Header";
-import Keyboard from "./components/Keyboard";
-import Modal from "./components/Modal";
+import GameBoard from "./components/gameboard/GameBoard";
+import Header from "./components/ui/Header";
+import Keyboard from "./components/keyboard/Keyboard";
+import Modal from "./components/ui/Modal";
 import GameProvider from "./components/store/GameProvider";
-import Toast from "./components/Toast";
+import Toast from "./components/ui/Toast";
 
 function App() {
   return (
     <GameProvider>
       <Modal />
       <Toast />
-      <div className="h-[100%] flex flex-col flex-grow max-w-[500px] mx-auto">
+      <div className="max-h-[100VH] flex flex-col justify-between flex-grow mx-auto">
         <Header />
         <GameBoard />
         <Keyboard />

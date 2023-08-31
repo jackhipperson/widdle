@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useContext } from "react";
-import { gameContext } from "./store/GameProvider.jsx";
+import { gameContext } from "../store/GameProvider.jsx";
 import KeyboardRow from "./KeyboardRow.jsx";
 
 const keyboardRow1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
@@ -40,7 +40,7 @@ const Keyboard = (props) => {
     };
   }, [handleKeyboard]);
   return (
-    <div onKeyDown={handleKeyboard} className="p-2">
+    <div onKeyDown={handleKeyboard} className="max-w-[100%] p-2 absolute bottom-0 left-[50%] translate-x-[-50%]">
       <KeyboardRow id="1" row={keyboardRow1} />
       <KeyboardRow id="2" row={keyboardRow2} />
       <KeyboardRow id="3" row={keyboardRow3} />

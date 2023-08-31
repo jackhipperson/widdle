@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
 import ReactDOM from "react-dom";
-import { gameContext } from "./store/GameProvider";
+import { gameContext } from "../store/GameProvider";
 import DistributionItem from "./DistributionItem";
 
-
 const Backdrop = () => {
-
-  const gameCtx = useContext(gameContext)
+  const gameCtx = useContext(gameContext);
   const onClickHandler = () => {
-    gameCtx.setModal(false)
-  }
+    gameCtx.setModal(false);
+  };
 
-  return <div onClick={onClickHandler} className="fixed top-0 left-0 w-full h-full z-20 bg-slate-700 opacity-50"></div>;
+  return (
+    <div
+      onClick={onClickHandler}
+      className="fixed top-0 left-0 w-full h-full z-20 bg-slate-700 opacity-50"
+    ></div>
+  );
 };
 
 const Overlay = () => {
@@ -19,9 +22,14 @@ const Overlay = () => {
   function closeModal() {
     gameCtx.setModal(false);
   }
-  const winPercent =
-    (parseInt(gameCtx.userStats.won) / parseInt(gameCtx.userStats.played) *
-    100);
+
+  let winPercent = 0;
+
+  if (gameCtx.userStats.won !== 0) {
+    winPercent =
+      (parseInt(gameCtx.userStats.won) / parseInt(gameCtx.userStats.played)) *
+      100;
+  }
 
   let maxWordWin = 0;
 
@@ -114,7 +122,12 @@ const Overlay = () => {
         />
       </div>
       <div className="p-2">
-        <button onClick={gameCtx.resetGameHandler} className="border border-[#787c7e] p-2 hover:bg-[#538d4e] hover:text-white active:bg-[#538d4e] active:text-white" >Next Word</button>
+        <button
+          onClick={gameCtx.resetGameHandler}
+          className="border border-[#787c7e] p-2 hover:bg-[#538d4e] hover:text-white active:bg-[#538d4e] active:text-white"
+        >
+          Next Word
+        </button>
       </div>
     </div>
   );

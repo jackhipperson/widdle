@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useContext } from "react";
-import { gameContext } from "./store/GameProvider";
+import { gameContext } from "../store/GameProvider";
 
 const Message = () => {
   const gameCtx = useContext(gameContext);

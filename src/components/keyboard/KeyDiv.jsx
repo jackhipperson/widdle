@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { gameContext } from "./store/GameProvider";
+import { gameContext } from "../store/GameProvider";
 
 useContext;
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { gameContext } from "./store/GameProvider";
+import { gameContext } from "../store/GameProvider";
 
 function DistributionItem(props) {
   const gameCtx = useContext(gameContext);
