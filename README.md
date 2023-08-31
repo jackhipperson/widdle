@@ -12,7 +12,7 @@ I created this app as a personal project to improve my React skills. The app cur
 ⏱️ Timeless fun: A quick yet engaging game that can be played during short breaks or leisure time.
 
 ## Demo
-Curious to see how Widdle works? Check out the live demo here.
+Curious to see how Widdle works? Check out the live demo at https://jackhipperson.github.io/widdle/ .
 
 ## Installation
 Clone the repository: git clone https://github.com/jackhipperson/widdle.git
