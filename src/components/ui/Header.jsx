@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { useContext } from "react";
 import { gameContext } from "../store/GameProvider";
 
 const Header = () => {
+  const gameCtx = useContext(gameContext);
 
-    const gameCtx = useContext(gameContext)
-
-    const onStatClickHandler = () => {
-        gameCtx.setModal(true)
-    }
+  const onStatClickHandler = () => {
+    gameCtx.setModal(true);
+  };
   return (
     <div className="flex px-4 mb-4 flex-row justify-between items-center text-center border-b border-slate-300 ">
       <div className="flex justify-center items-center px-4">
@@ -18,7 +18,8 @@ const Header = () => {
         <FontAwesomeIcon icon={faInfinity} size="lg" />
       </div>
       <div className="flex justify-end p-4">
-        <FontAwesomeIcon onClick={onStatClickHandler} icon={faChartBar} />
+        <FontAwesomeIcon className="p-2 text-xl" onClick={()=>{window.location = 'https://github.com/jackhipperson'}} icon={faGithub} />
+        <FontAwesomeIcon className="p-2 text-xl" onClick={onStatClickHandler} icon={faChartBar} />
       </div>
     </div>
   );
