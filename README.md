@@ -1,5 +1,10 @@
 # Widdle: Wordle Clone
 
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white" />
+<img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+<img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" />
+
 Widdle is a fun and addictive word puzzle game inspired by the classic game Wordle. Built using React JS (Vite) and Tailwind CSS, this project brings the excitement of guessing a secret word within a limited number of attempts right to your web browser.
 
 ## About
